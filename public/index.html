@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <div class="sidebar">
+        <h2>📋 Todo-lister</h2>
+        <button onclick="getTodos()">Oppdater</button>
+        <div id="todoList"></div>
+    </div>
+
+    <div class="main">
+        <h2 id="title">Velg en liste</h2>
+        <div id="tasks"></div>
+    </div>
+
+    <div class="create">
+        <h2>➕ Ny liste</h2>
+        <input type="text" id="newTitle" placeholder="Tittel">
+
+        <input type="text" id="taskInput" placeholder="Ny oppgave">
+        <button onclick="addTask()">Legg til</button>
+
+        <div id="newTasks"></div>
+
+        <button class="createBtn" onclick="createTodo()">Opprett liste</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
