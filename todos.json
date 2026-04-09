@@ -3,17 +3,82 @@
     "id": 1,
     "title": "Handleliste",
     "tasks": [
-      { "text": "Kjøpe melk", "done": false },
-      { "text": "Kjøpe brød", "done": true },
-      { "text": "Kjøpe egg", "done": false }
+      {
+        "text": "Kjøpe melk",
+        "done": false
+      },
+      {
+        "text": "Kjøpe brød",
+        "done": true
+      },
+      {
+        "text": "Kjøpe egg",
+        "done": false
+      }
     ]
   },
   {
     "id": 2,
     "title": "Skolearbeid",
     "tasks": [
-      { "text": "Gjøre matte", "done": false },
-      { "text": "Lese naturfag", "done": false }
+      {
+        "text": "Gjøre matte",
+        "done": false
+      },
+      {
+        "text": "Lese naturfag",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Handle liste  2",
+    "tasks": [
+      {
+        "text": "egg",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Arman Handle Liste",
+    "tasks": [
+      {
+        "text": "Egg",
+        "done": false
+      },
+      {
+        "text": "Kondomer",
+        "done": false
+      },
+      {
+        "text": "Vape",
+        "done": false
+      },
+      {
+        "text": "Hasj",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Torbjorn",
+    "tasks": [
+      {
+        "text": "Egg",
+        "done": false
+      },
+      {
+        "text": "Melk",
+        "done": false
+      },
+      {
+        "text": "Fløte",
+        "done": false
+      }
     ]
   }
 ]
