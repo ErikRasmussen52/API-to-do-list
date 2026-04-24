@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "type": "todo",
     "title": "Handleliste",
     "tasks": [
       {
@@ -19,6 +20,7 @@
   },
   {
     "id": 2,
+    "type": "todo",
     "title": "Skolearbeid",
     "tasks": [
       {
@@ -33,7 +35,8 @@
   },
   {
     "id": 3,
-    "title": "Handle liste  2",
+    "type": "todo",
+    "title": "Handle liste 2",
     "tasks": [
       {
         "text": "egg",
@@ -43,6 +46,7 @@
   },
   {
     "id": 4,
+    "type": "todo",
     "title": "Arman Handle Liste",
     "tasks": [
       {
@@ -56,15 +60,12 @@
       {
         "text": "Vape",
         "done": false
-      },
-      {
-        "text": "Hasj",
-        "done": false
       }
     ]
   },
   {
     "id": 5,
+    "type": "todo",
     "title": "Torbjorn",
     "tasks": [
       {
@@ -80,5 +81,33 @@
         "done": false
       }
     ]
+  },
+  {
+    "id": 6,
+    "type": "note",
+    "title": "Samfunnsfag Notater",
+    "content": "Den industrielle revolusjon startet i Storbritannia og førte til store endringer i samfunnet."
+  },
+  {
+    "id": 7,
+    "type": "note",
+    "title": "Huskeliste",
+    "content": "Husk å trene, gjøre lekser og ringe mamma."
+  },
+  {
+    "id": 8,
+    "title": "a",
+    "tasks": [
+      {
+        "text": "jobbe",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "type": "note",
+    "title": "Torsdag",
+    "content": "fyrstikken møte, gå tur med hund, pakke treningsbag, trene før trening"
   }
 ]

@@ -1,94 +1,234 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: #0f172a;
     color: white;
 }
 
 .app {
     display: grid;
-    grid-template-columns: 250px 1fr 300px;
-    height: 100vh;
+    grid-template-columns: 280px 1fr 340px;
+    min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
-    background: #1e293b;
+    background: #111827;
     padding: 20px;
-    border-right: 1px solid #334155;
+    border-right: 1px solid #1f2937;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.sidebar h2 {
-    margin-bottom: 10px;
+.sidebar-header h1 {
+    margin: 0 0 12px 0;
+    font-size: 24px;
 }
 
-.sidebar button {
+.refresh-btn {
     width: 100%;
     padding: 10px;
-    background: #3b82f6;
     border: none;
+    border-radius: 10px;
+    background: #2563eb;
     color: white;
-    border-radius: 8px;
-    margin-bottom: 15px;
     cursor: pointer;
+    font-weight: bold;
 }
 
-#todoList div {
-    padding: 10px;
-    margin: 5px 0;
+.refresh-btn:hover {
+    background: #1d4ed8;
+}
+
+.category {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 15px;
+}
+
+.category h2 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #e2e8f0;
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item {
     background: #334155;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid transparent;
 }
 
-#todoList div:hover {
+.item:hover {
     background: #475569;
+    border-color: #60a5fa;
 }
 
 /* Main */
 .main {
     padding: 30px;
+    background: #0f172a;
+}
+
+.main-card {
+    background: #111827;
+    border-radius: 18px;
+    padding: 25px;
+    min-height: calc(100vh - 60px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.main-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 28px;
 }
 
 .task {
     background: #1e293b;
-    padding: 12px;
+    padding: 14px;
     margin: 10px 0;
-    border-radius: 8px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .task input {
-    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.note-view {
+    background: #1e293b;
+    padding: 18px;
+    border-radius: 12px;
+    line-height: 1.6;
+    color: #e5e7eb;
+    white-space: pre-wrap;
 }
 
 /* Create panel */
 .create {
-    background: #1e293b;
+    background: #111827;
+    border-left: 1px solid #1f2937;
     padding: 20px;
-    border-left: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.create input {
+.create-card {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.create-card h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.create input,
+.create textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-top: 10px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
+    outline: none;
+    background: #334155;
+    color: white;
+}
+
+.create textarea {
+    min-height: 140px;
+    resize: vertical;
 }
 
 .create button {
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: #22c55e;
+    padding: 12px;
+    margin-top: 12px;
     border: none;
-    color: white;
-    border-radius: 8px;
+    border-radius: 10px;
+    color: rgb(254, 254, 254);
     cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
 }
 
+.create button:hover {
+    opacity: 0.92;
+}
+
+/* Legg til oppgave-knapp */
+.create-card:first-child button:first-of-type {
+    background: linear-gradient(135deg, #f59e0b, #f97316);
+    color: white;
+}
+
+.create-card:first-child button:first-of-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Opprett liste */
 .createBtn {
-    background: #3b82f6 !important;
+    background: #2563eb;
+}
+
+/* Opprett notat */
+.noteBtn {
+    background: #7c3aed;
+}
+
+.preview-box {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.preview-task {
+    background: #334155;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.empty-text {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .app {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar,
+    .create,
+    .main {
+        border: none;
+    }
+
+    .main-card {
+        min-height: auto;
+    }
 }

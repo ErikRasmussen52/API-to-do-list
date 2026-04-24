@@ -2,35 +2,55 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <title>Todo App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planner App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
 
-    <div class="sidebar">
-        <h2>📋 Todo-lister</h2>
-        <button onclick="getTodos()">Oppdater</button>
-        <div id="todoList"></div>
-    </div>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>📚 Planner</h1>
+            <button class="refresh-btn" onclick="getTodos()">Oppdater</button>
+        </div>
 
-    <div class="main">
-        <h2 id="title">Velg en liste</h2>
-        <div id="tasks"></div>
-    </div>
+        <div class="category">
+            <h2>☑️ Lister</h2>
+            <div id="todoList" class="category-list"></div>
+        </div>
 
-    <div class="create">
-        <h2>➕ Ny liste</h2>
-        <input type="text" id="newTitle" placeholder="Tittel">
+        <div class="category">
+            <h2>📝 Notater</h2>
+            <div id="noteList" class="category-list"></div>
+        </div>
+    </aside>
 
-        <input type="text" id="taskInput" placeholder="Ny oppgave">
-        <button onclick="addTask()">Legg til</button>
+    <main class="main">
+        <div class="main-card">
+            <h2 id="title">Velg en liste eller et notat</h2>
+            <div id="tasks"></div>
+        </div>
+    </main>
 
-        <div id="newTasks"></div>
+    <aside class="create">
+        <div class="create-card">
+            <h2>➕ Ny liste</h2>
+            <input type="text" id="newTitle" placeholder="Tittel">
+            <input type="text" id="taskInput" placeholder="Ny oppgave">
+            <button onclick="addTask()">Legg til oppgave</button>
+            <div id="newTasks" class="preview-box"></div>
+            <button class="createBtn" onclick="createTodo()">Opprett liste</button>
+        </div>
 
-        <button class="createBtn" onclick="createTodo()">Opprett liste</button>
-    </div>
+        <div class="create-card">
+            <h2>📝 Nytt notat</h2>
+            <input type="text" id="noteTitle" placeholder="Tittel på notat">
+            <textarea id="noteContent" placeholder="Skriv notatet ditt her..."></textarea>
+            <button class="noteBtn" onclick="createNote()">Opprett notat</button>
+        </div>
+    </aside>
 
 </div>
 

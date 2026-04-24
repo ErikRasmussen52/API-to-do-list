@@ -7,7 +7,7 @@ const FILE = "todos.json";
 
 // Middleware
 app.use(express.json());
-app.use(express.static("public")); // kobler til nettsiden
+app.use(express.static("public"));
 
 // ---------- Hjelpefunksjoner ----------
 function readTodos() {
@@ -25,13 +25,14 @@ function writeTodos(data) {
 
 // ---------- API ----------
 
-// 1. GET /todos (liste)
+// 1. GET /todos
 app.get("/todos", (req, res) => {
     const todos = readTodos();
 
     const simpleList = todos.map(todo => ({
         id: todo.id,
-        title: todo.title
+        title: todo.title,
+        type: todo.type || "todo"
     }));
 
     res.json(simpleList);
@@ -45,7 +46,12 @@ app.get("/todos/:id", (req, res) => {
     const todo = todos.find(t => t.id === id);
 
     if (!todo) {
-        return res.status(404).json({ error: "Todo ikke funnet" });
+        return res.status(404).json({ error: "Element ikke funnet" });
+    }
+
+    // Hvis gammel data mangler type, sett todo som default
+    if (!todo.type) {
+        todo.type = "todo";
     }
 
     res.json(todo);
@@ -55,26 +61,38 @@ app.get("/todos/:id", (req, res) => {
 app.post("/todos", (req, res) => {
     const todos = readTodos();
 
-    const { title, tasks } = req.body;
+    const { type, title, tasks, content } = req.body;
 
-    // 🔥 FIX: bedre validering + tillat tom tasks
-    if (!title || !Array.isArray(tasks)) {
-        return res.status(400).json({ error: "Mangler title eller tasks" });
+    if (!type || !title) {
+        return res.status(400).json({ error: "Mangler type eller title" });
     }
 
-    // 🔥 DEBUG (kan fjernes senere)
-    console.log("Fikk data fra klient:", req.body);
-
-    const newTodo = {
+    const newItem = {
         id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
-        title,
-        tasks
+        type,
+        title
     };
 
-    todos.push(newTodo);
+    if (type === "todo") {
+        if (tasks && !Array.isArray(tasks)) {
+            return res.status(400).json({ error: "Tasks må være en array" });
+        }
+
+        newItem.tasks = tasks || [];
+    } else if (type === "note") {
+        if (!content) {
+            return res.status(400).json({ error: "Mangler content for notat" });
+        }
+
+        newItem.content = content;
+    } else {
+        return res.status(400).json({ error: "Ugyldig type" });
+    }
+
+    todos.push(newItem);
     writeTodos(todos);
 
-    res.status(201).json(newTodo);
+    res.status(201).json(newItem);
 });
 
 // ---------- Start server ----------

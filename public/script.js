@@ -1,22 +1,45 @@
 let tasks = [];
 
-// Hent alle todos
+// Hent alle
 async function getTodos() {
     const res = await fetch("/todos");
     const data = await res.json();
 
-    const list = document.getElementById("todoList");
-    list.innerHTML = "";
+    const todoList = document.getElementById("todoList");
+    const noteList = document.getElementById("noteList");
 
-    data.forEach(todo => {
-        const div = document.createElement("div");
-        div.textContent = todo.title;
-        div.onclick = () => getTodo(todo.id);
-        list.appendChild(div);
-    });
+    todoList.innerHTML = "";
+    noteList.innerHTML = "";
+
+    const todos = data.filter(item => item.type === "todo");
+    const notes = data.filter(item => item.type === "note");
+
+    if (todos.length === 0) {
+        todoList.innerHTML = `<div class="empty-text">Ingen lister enda</div>`;
+    } else {
+        todos.forEach(todo => {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.textContent = `☑️ ${todo.title}`;
+            div.onclick = () => getTodo(todo.id);
+            todoList.appendChild(div);
+        });
+    }
+
+    if (notes.length === 0) {
+        noteList.innerHTML = `<div class="empty-text">Ingen notater enda</div>`;
+    } else {
+        notes.forEach(note => {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.textContent = `📝 ${note.title}`;
+            div.onclick = () => getTodo(note.id);
+            noteList.appendChild(div);
+        });
+    }
 }
 
-// Hent én todo
+// Hent én
 async function getTodo(id) {
     const res = await fetch(`/todos/${id}`);
     const data = await res.json();
@@ -26,77 +49,118 @@ async function getTodo(id) {
     const tasksDiv = document.getElementById("tasks");
     tasksDiv.innerHTML = "";
 
-    data.tasks.forEach(task => {
+    if (data.type === "todo") {
+        if (!data.tasks || data.tasks.length === 0) {
+            tasksDiv.innerHTML = `<div class="empty-text">Ingen oppgaver i denne listen</div>`;
+            return;
+        }
+
+        data.tasks.forEach(task => {
+            const div = document.createElement("div");
+            div.className = "task";
+
+            div.innerHTML = `
+                <input type="checkbox" ${task.done ? "checked" : ""} disabled>
+                <span>${task.text}</span>
+            `;
+
+            tasksDiv.appendChild(div);
+        });
+    } else if (data.type === "note") {
         const div = document.createElement("div");
-        div.className = "task";
-
-        div.innerHTML = `
-            <input type="checkbox" ${task.done ? "checked" : ""}>
-            <span>${task.text}</span>
-        `;
-
+        div.className = "note-view";
+        div.textContent = data.content || "Tomt notat";
         tasksDiv.appendChild(div);
-    });
+    }
 }
 
-// Legg til task
+// Legg til task i preview
 function addTask() {
     const input = document.getElementById("taskInput");
-    const text = input.value;
+    const text = input.value.trim();
 
     if (!text) return;
 
     tasks.push({ text, done: false });
 
     const div = document.getElementById("newTasks");
-    div.innerHTML += `<p>${text}</p>`;
+    const p = document.createElement("div");
+    p.className = "preview-task";
+    p.textContent = `• ${text}`;
+    div.appendChild(p);
 
     input.value = "";
 }
 
-// 🔥 FIXET createTodo
+// Lag liste
 async function createTodo() {
-    const title = document.getElementById("newTitle").value;
+    const title = document.getElementById("newTitle").value.trim();
 
     if (!title) {
-        alert("Skriv tittel");
+        alert("Skriv tittel på listen");
         return;
     }
 
-    try {
-        const res = await fetch("/todos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                title,
-                tasks: tasks || []
-            })
-        });
+    const res = await fetch("/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            type: "todo",
+            title,
+            tasks
+        })
+    });
 
-        if (!res.ok) {
-            throw new Error("Feil ved lagring");
-        }
-
-        const data = await res.json();
-        console.log("Opprettet:", data);
-
-        // Reset UI
-        tasks = [];
-        document.getElementById("newTasks").innerHTML = "";
-        document.getElementById("newTitle").value = "";
-        document.getElementById("taskInput").value = "";
-
-        // 🔥 Oppdater liste uten reload
-        await getTodos();
-
-        alert("Liste opprettet!");
-    } catch (err) {
-        console.error(err);
-        alert("Noe gikk galt");
+    if (!res.ok) {
+        alert("Feil ved lagring av liste");
+        return;
     }
+
+    resetTodoUI();
+    await getTodos();
+    alert("Liste opprettet!");
 }
 
-// Start
+// Lag notat
+async function createNote() {
+    const title = document.getElementById("noteTitle").value.trim();
+    const content = document.getElementById("noteContent").value.trim();
+
+    if (!title || !content) {
+        alert("Fyll ut tittel og notat");
+        return;
+    }
+
+    const res = await fetch("/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            type: "note",
+            title,
+            content
+        })
+    });
+
+    if (!res.ok) {
+        alert("Feil ved lagring av notat");
+        return;
+    }
+
+    resetNoteUI();
+    await getTodos();
+    alert("Notat opprettet!");
+}
+
+function resetTodoUI() {
+    tasks = [];
+    document.getElementById("newTitle").value = "";
+    document.getElementById("taskInput").value = "";
+    document.getElementById("newTasks").innerHTML = "";
+}
+
+function resetNoteUI() {
+    document.getElementById("noteTitle").value = "";
+    document.getElementById("noteContent").value = "";
+}
+
 getTodos();
